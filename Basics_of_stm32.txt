@@ -1,0 +1,34 @@
+#Program for led_blink/digital_Write
+HAL_GPIO_WritePin(GPIOA, GPIO13, GPIO_SET);//high->set
+HAL_Delay(1000);
+HAL_GPIO_WritePin(GPIOA, GPIO13, GPIO_RESET);//low->reset
+HAL_Delay(1000);
+
+
+#Program for toggle_led:
+HAL_GPIO_TogglePin(GPIOA, GPIO13);
+
+#Program for digitalRead:
+uint8_t value = HAL_GPIO_ReadPin(GPIOA, GPIO_13);
+
+#Program for analogRead:
+HAL_ADC_Start(&hadc1);				 // Start ADC conversion, ----&hadc1->ADC1, &hadc2->ADC2
+HAL_ADC_PollForConversion(&hadc1,HAL_MAX_DELAY); //Wait until conversion completes (no timeout)
+uint16_t = HAL_ADC_GetValue(&hadc1);		 //Read the converted value (0 - 4095 for 12-bit ADC)
+
+//You can actually overwrite the HAL_MAX_DEALY as
+HAL_ADC_PollForConversion(&hadc1,100);//100ms 
+
+
+#Program for analogWrite
+uint32_t Value1;
+HAL_DAC_Start(&hdac, DAC_CHANNEL_1);
+HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, Value1);
+
+#Analog Write with PWM
+uint32_t dutyValue;
+HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+_HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, dutyValue);
+
+
+
