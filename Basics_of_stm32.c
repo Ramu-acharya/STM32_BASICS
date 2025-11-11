@@ -32,3 +32,29 @@ HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, Value1); // Set DAC outp
 uint32_t dutyValue = __HAL_TIM_GET_AUTORELOAD(&htim3) / 2; // 50% duty cycle
 HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);                  // Start PWM
 __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, dutyValue);  // Set duty cycle
+
+/*-------Print basic message through USB_CDC_COM PORT*/
+char msg[] = "Hello STM32 World!\r\n";//decaration of message inside int main() function
+
+while(1)
+{
+    CDC_Transmit_FS((uint8_t *)msg, strlen(msg));
+    HAL_Delay(1000); // wait 1 second
+}
+/*---------------------------------------*/
+
+
+/*--------Use printf function to print through the usb_cdc_com port*/
+#include "stdio.h"
+int _write(int file, char *ptr, int len)
+{
+    CDC_Transmit_FS((uint8_t*)ptr, len);
+    return len;
+}
+
+while (1)
+    {
+        printf("Hello there!!!!!\r\n");
+        HAL_Delay(1000);
+    }
+/*---------------------------------------*/
