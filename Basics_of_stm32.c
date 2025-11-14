@@ -63,3 +63,20 @@ while (1)
         HAL_Delay(1000);
     }
 /*********************************************************************************/
+
+
+/*--------Use printf function to print through the UART4 port*/
+#include <stdio.h>
+
+int _write(int file, char *ptr, int len)  /* Only define ONCE, here after huart4 */
+{
+    HAL_UART_Transmit(&huart4, (uint8_t*)ptr, len, HAL_MAX_DELAY);
+    return len;
+}
+
+  while (1)
+  {
+	  printf("Running...\r\n");
+	  HAL_Delay(1000);
+  }
+/*********************************************************************************/
