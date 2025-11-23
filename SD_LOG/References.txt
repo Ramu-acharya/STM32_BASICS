@@ -1,0 +1,2 @@
+##SD card sample example was taken from the DeepBlue
+Link: https://deepbluembedded.com/stm32-sd-card-spi-fatfs-tutorial-examples/
