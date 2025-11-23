@@ -1,0 +1,73 @@
+// SPI Configuration (MX_SPI1_Init) 
+Mode: SPI_MODE_MASTER
+DataSize: SPI_DATASIZE_8BIT
+CLKPolarity: SPI_POLARITY_LOW
+CLKPhase: SPI_PHASE_1EDGE
+BaudRatePrescaler: SPI_BAUDRATEPRESCALER_256  // Start slow!
+NSS: SPI_NSS_SOFT  // Manual CS control
+// CS Pin: PG13 (GPIO Output, Push-Pull)            
+
+
+SD Card    →  STM32F429
+---------------------------------
+CS         →  PG13 (or your choice)
+MOSI       →  PA7  (SPI1_MOSI)
+MISO       →  PA6  (SPI1_MISO)
+SCK        →  PA5  (SPI1_SCK)
+VCC        →  3.3V
+GND        →  GND
+
+//Mount_unMount
+FATFS FatFs;
+FRESULT res;
+res = f_mount(&FatFs, "", 1); // Mount SD Card (1 = mount immediately)
+res = f_mount(NULL, "", 0); // Unmount (use NULL)
+
+
+// Get Storage Info
+FATFS *fs_ptr;
+DWORD free_clusters;
+f_getfree("", &free_clusters, &fs_ptr);
+uint32_t total = (fs_ptr->n_fatent - 2) * fs_ptr->csize * 0.5;  // KB
+uint32_t free = free_clusters * fs_ptr->csize * 0.5;  // KB
+
+
+
+//File operation
+FIL file;
+UINT bytes_rw;
+f_open(&file, "test.txt", FA_WRITE | FA_CREATE_ALWAYS);   // CREATE NEW FILE (overwrites if exists)
+f_open(&file, "test.txt", FA_READ);                       // OPEN EXISTING FILE
+f_open(&file, "test.txt", FA_WRITE | FA_OPEN_EXISTING);   // APPEND TO FILE
+f_lseek(&file, f_size(&file));                            // Move to end
+f_close(&file);                                           // ALWAYS CLOSE!
+
+
+
+//Writing 
+f_puts("Hello World\n", &file);                       // Method 1: Simple string write
+char buffer[100] = "Data to write";                   // Method 2: Binary/controlled write
+UINT written;
+f_write(&file, buffer, strlen(buffer), &written);
+
+//Reading
+char buffer[200];
+UINT bytes_read;
+f_gets(buffer, sizeof(buffer), &file);               // Method 1: Read line (stops at \n)
+f_read(&file, buffer, 50, &bytes_read);              // Method 2: Read exact bytes
+f_read(&file, buffer, f_size(&file), &bytes_read);   // Method 3: Read entire file
+
+//Delete
+f_unlink("oldfile.txt");  //Delete File
+
+
+FA_READ          // Read only
+FA_WRITE         // Write only
+FA_OPEN_EXISTING // Open file (must exist)
+FA_CREATE_NEW    // Create new (fail if exists)
+FA_CREATE_ALWAYS // Create new (overwrite if exists)
+FA_OPEN_ALWAYS   // Open if exists, create if not
+FA_OPEN_APPEND   // Same as OPEN_ALWAYS + seek to end
+
+// Combine with |
+FA_WRITE | FA_READ | FA_CREATE_ALWAYS
