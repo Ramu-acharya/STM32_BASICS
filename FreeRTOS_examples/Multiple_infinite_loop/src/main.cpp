@@ -1,17 +1,14 @@
 #include <Arduino.h>
-
-// Task 1 - runs on Core 0
 void Task1(void *parameter) {
   for(;;) {
-    Serial.println("Task 1 running on Core " + String(xPortGetCoreID()));
-    vTaskDelay(1000 / portTICK_PERIOD_MS);  // 1 second delay
+    Serial.println("hello from Core " + String(xPortGetCoreID()));
+    vTaskDelay(500 / portTICK_PERIOD_MS);  // 500ms delay
   }
 }
 
-// Task 2 - runs on Core 1
 void Task2(void *parameter) {
   for(;;) {
-    Serial.println("Task 2 running on Core " + String(xPortGetCoreID()));
+    Serial.println("RAMU From Core " + String(xPortGetCoreID()));
     vTaskDelay(500 / portTICK_PERIOD_MS);  // 500ms delay
   }
 }
@@ -30,7 +27,7 @@ void setup() {
     0           // Core 0
   );
   
-  // Create Task 2 on Core 1
+  // Create Task 2 on Core 0
   xTaskCreatePinnedToCore(
     Task2,      // Function
     "Task2",    // Name
@@ -38,11 +35,10 @@ void setup() {
     NULL,       // Parameters
     1,          // Priority
     NULL,       // Handle
-    1           // Core 1
+    0        // Core 0
   );
 }
 
-void loop() {
-  // Empty - tasks handle everything
-  vTaskDelay(1000 / portTICK_PERIOD_MS);
+void loop(){
+  // Empty loop
 }
