@@ -1,3 +1,5 @@
+//@Author: Ramu Acharya
+
 // SPI Configuration (MX_SPI1_Init) 
 Mode: SPI_MODE_MASTER
 DataSize: SPI_DATASIZE_8BIT
