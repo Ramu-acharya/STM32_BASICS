@@ -1,0 +1,10 @@
+../Core/Src/ds3231.c:19:16:BCD_To_Decimal	16	static
+../Core/Src/ds3231.c:27:16:Decimal_To_BCD	16	static
+../Core/Src/ds3231.c:35:19:DS3231_Init	40	static
+../Core/Src/ds3231.c:73:6:DS3231_IsConnected	16	static
+../Core/Src/ds3231.c:81:19:DS3231_SetTime	40	static
+../Core/Src/ds3231.c:100:19:DS3231_GetTime	40	static
+../Core/Src/ds3231.c:124:19:DS3231_GetTemperature	40	static
+../Core/Src/ds3231.c:145:6:DS3231_FormatTime	24	static
+../Core/Src/ds3231.c:153:6:DS3231_FormatDate	24	static
+../Core/Src/ds3231.c:161:6:DS3231_FormatDateTime	40	static
